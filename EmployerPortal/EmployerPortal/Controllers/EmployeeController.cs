@@ -28,5 +28,18 @@ namespace EmployerPortal.Controllers
             return Ok(vm);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> updateEmployee(int id, [FromBody] Employee vm)
+        {
+            await empRepository.UpdateEmployee(id, vm);
+            return Ok(vm);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> deleteEmployee(int id)
+        {
+            await empRepository.DeleteEmployee(id);
+            return Ok();
+        }
     }
 }

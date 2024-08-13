@@ -23,5 +23,31 @@ namespace EmployerPortal.Repository
             await db.SaveChangesAsync();
         }
 
+        public async Task UpdateEmployee(int id, Employee obj)
+        {
+            var employee = await db.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                throw new Exception("Employee Not found");
+            }
+            employee.Name = obj.Name;
+            employee.Email = obj.Email;
+            employee.Phone = obj.Phone;
+            employee.Salary = obj.Salary;
+
+            await db.SaveChangesAsync();
+        }
+
+        public async Task DeleteEmployee(int id)
+        {
+            var employee = await db.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                throw new Exception("Employee Not found");
+            }
+            db.Employees.Remove(employee);
+
+            await db.SaveChangesAsync();
+        }
     }
 }

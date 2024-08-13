@@ -1,1 +1,85 @@
-<p>employee works!</p>
+<div class="container-fluid">
+    <div class="row p-2 bg-info">
+      <div class="col-6">
+        <h3>Employee List</h3>
+      </div>
+      <div class="col-6 text-end">
+        <button class="btn btn-warning" (click)="openModal()">Add Employee</button>
+      </div>
+    </div>
+    @if (employeeList && employeeList.length > 0) {
+      <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Salary</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          @for (item of employeeList; track $index) {
+            <tr>
+                <td>{{item.name | uppercase}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.salary}}</td>
+                <td class="text-center">
+                    <button class="btn btn-primary" (click)="onUpdate(item)">Edit</button> ||
+                    <button class="btn btn-danger" (click)="onDelete(item)">Delete</button>
+                </td>
+            </tr>}
+        </tbody>
+    </table>
+    }@else {
+      <h5 class="text-center p-5">Employee Not Found</h5>
+    }
+  </div>
+
+<div class="modal" id="myModal" #myModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header bg-info">
+        @if (employeeForm.value.id == 0) 
+        {
+          <h4 class="modal-title">Update Employee</h4>
+        }@else {
+          <h4 class="modal-title">Add Employee</h4>
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"></button>
+      </div>
+      <form [formGroup]= "employeeForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="raw">
+          <div class="col-12">
+            <input type="text" formControlName="name" name="name" class="form-control" placeholder="Name" >
+          </div>
+        </div>
+        <div class="raw mt-3">
+          <div class="col-6">
+            <input type="text" formControlName="email" name="email" class="form-control" placeholder="Email" >
+          </div>
+          <div class="col-6">
+            <input type="text" formControlName="phone" name="phone" class="form-control" placeholder="Phone" >
+          </div>
+          <div class="col-6">
+            <input type="number" formControlName="salary" name="salary" class="form-control" placeholder="Salary">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        @if (employeeForm.value.id == 0) 
+        {
+          <button type="submit" [disabled]="this.employeeForm.invalid" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+        }@else {
+          <button type="submit" [disabled]="this.employeeForm.invalid" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+        }
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
